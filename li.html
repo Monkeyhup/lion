@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        html{height:100%}
+        body{height:100%;margin:0px;padding:0px}
+        #baidu_map{height: 100%}
+    </style>
+
+    <!--<link rel="stylesheet" href="lib/horizontal-timeline-master/css/reset.css">-->
+    <!--<link rel="stylesheet" href="lib/horizontal-timeline-master/css/style.css">-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=s5op0rBri8h6EBYCYoEREAZ3OQRrMKME"></script>
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
+    <script src="lib/jquery-3.2.1.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<div class="page-header">
+    <h1>数据地图 <small>beiyou.charts</small></h1>
+</div>
+<div class="container" style="width: 100%;z-index:2;position:absolute;background: transparent;padding-top: 20px">
+    <div id="index_one" class="dropdown col-md-3">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            一级指标
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li class="dropdown-header"><a href="#">请选择一级指标</a></li>
+            <li><a href="#">指标1</a></li>
+            <li><a href="#">指标2</a></li>
+            <li><a href="#">指标3</a></li>
+        </ul>
+    </div>
+    <div id="index_two" class="dropdown col-md-3">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            二级指标
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li class="dropdown-header"><a href="#">请选择二级指标</a></li>
+            <li><a href="#">指标1</a></li>
+            <li><a href="#">指标2</a></li>
+            <li><a href="#">指标3</a></li>
+        </ul>
+    </div>
+    <div id="button_right" class="btn-group " role="group" aria-label="...">
+        <button type="button" class="btn btn-default" onclick="show_table()">按钮1</button>
+        <button type="button" class="btn btn-default">按钮2</button>
+        <button type="button" class="btn btn-default">按钮3</button>
+    </div>
+    <div class="table_container" id="main_echarts" style="display:none;float:right;height: 300px;width: 300px;"></div>
+
+
+
+</div>
+<div class="timeline_container" style="width: 100%;position:absolute;background: transparent;padding-top:40%;padding-left: 25%">
+    <section class="cd-horizontal-timeline" style="">
+        <div class="timeline">
+            <div class="events-wrapper">
+                <div class="events">
+                    <ol>
+                        <li><a href="#0" data-date="16/01/2014" class="selected" onclick="test1()">16 Jan</a></li>
+                        <li><a href="#0" data-date="28/02/2014" onclick="test2()">28 Feb</a></li>
+                        <!-- other dates here -->
+                    </ol>
+                    <span class="filling-line" aria-hidden="true"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div id="baidu_map"></div>
+
+<script type="text/javascript">
+    var mapOptions={
+        maxZoom:12
+    }
+    var map = new BMap.Map("baidu_map",mapOptions);
+    map.setMapStyle({
+        styleJson: [ {
+            "featureType": "water",
+            "elementType": "all",
+            "stylers": {
+                "color": "#021019"
+            }
+        },
+            {
+                "featureType": "highway",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#000000"
+                }
+            },
+            {
+                "featureType": "highway",
+                "elementType": "geometry.stroke",
+                "stylers": {
+                    "color": "#147a92"
+                }
+            },
+            {
+                "featureType": "arterial",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#000000"
+                }
+            },
+            {
+                "featureType": "arterial",
+                "elementType": "geometry.stroke",
+                "stylers": {
+                    "color": "#0b3d51"
+                }
+            },
+            {
+                "featureType": "local",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#000000"
+                }
+            },
+            {
+                "featureType": "land",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#08304b"
+                }
+            },
+            {
+                "featureType": "railway",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#000000"
+                }
+            },
+            {
+                "featureType": "railway",
+                "elementType": "geometry.stroke",
+                "stylers": {
+                    "color": "#08304b"
+                }
+            },
+            {
+                "featureType": "subway",
+                "elementType": "geometry",
+                "stylers": {
+                    "lightness": -70
+                }
+            },
+            {
+                "featureType": "building",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#000000"
+                }
+            },
+            {
+                "featureType": "all",
+                "elementType": "labels.text.fill",
+                "stylers": {
+                    "color": "#857f7f"
+                }
+            },
+            {
+                "featureType": "all",
+                "elementType": "labels.text.stroke",
+                "stylers": {
+                    "color": "#000000"
+                }
+            },
+            {
+                "featureType": "building",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#022338"
+                }
+            },
+            {
+                "featureType": "green",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#062032"
+                }
+            },
+            {
+                "featureType": "boundary",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#1e1c1c"
+                }
+            },
+            {
+                "featureType": "manmade",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#022338"
+                }
+            },
+            {
+                "featureType": "poi",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            },
+            {
+                "featureType": "all",
+                "elementType": "labels.icon",
+                "stylers": {
+                    "visibility": "off"
+                }
+            },
+            {
+                "featureType": "all",
+                "elementType": "labels.text.fill",
+                "stylers": {
+                    "color": "#2da0c6",
+                    "visibility": "on"
+                }
+            }]
+    })
+    map.enableScrollWheelZoom(true);
+    var start_point = new BMap.Point(110.404, 32.915);// 创建点坐标
+    map.centerAndZoom(start_point,5);//设置初始视野及zoom
+
+    var _properties=new Array("province","city","district");
+    var flag=0;//计数器
+
+    //点击下钻，右键返回
+    //下钻回调函数
+    function callback_(e) {
+        if((0<=flag)&&(flag<3)){
+            var point=e.point;
+            var coder=new BMap.Geocoder();
+            coder.getLocation(point,function (rs) {
+                var name=rs.addressComponents[_properties[flag]];//获得点击的点的行政区划名字
+                var province=rs.addressComponents.province;
+                var city=rs.addressComponents.city;
+                console.log("这一块是："+name)
+                map.clearOverlays();
+                addPly_(name,province,city) ;               //调用colors.js中的添加覆盖物函数
+                //调整视野和zoom
+                map.setCenter(name);
+                var zoom=map.getZoom()+2;
+                map.setZoom(zoom);
+                flag=flag+1;               //计数器+1，表示下钻到下一层
+            })
+
+        }
+
+    };
+    //返回上级回调函数
+    function _callback(e) {
+        if((0<flag)&&(flag<=3)){
+            //通过覆盖物的矩形中心点确定覆盖的区域
+            var point=map.getOverlays()[0].getBounds().getCenter();
+            var coder=new BMap.Geocoder();
+            coder.getLocation(point,function (rs) {
+                var name=rs.addressComponents[_properties[flag-2]];
+                var province=rs.addressComponents.province;
+                var city=rs.addressComponents.city;
+                //返回上层的覆盖物
+                if(name){
+                    map.clearOverlays();
+                    addPly_(name,province,city);
+                    //调整视野和zoom
+                    map.setCenter(name);
+                    var zoom=map.getZoom()-2;
+                    map.setZoom(zoom);
+                }
+                else{
+                    map.clearOverlays();
+                    //调整视野和zoom为初始值
+                    map.centerAndZoom(start_point,5)
+                }
+                flag=flag-1; //计数器-1，表示返回上一层
+            })
+        }
+
+    }
+    map.addEventListener("click",callback_);
+    map.addEventListener("rightclick",_callback)
+
+    //加载echarts柱形图
+
+    function show_table(){
+        $.table=$(".table_container");
+        $.table.css("display","");
+        var myChart=echarts.init(document.getElementById('main_echarts'));
+        var option={
+            xAxis: {
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [120, 200, 150, 80, 70, 110, 130],
+                type: 'bar'
+            }]
+        };
+        myChart.setOption(option)
+
+    }
+
+
+</script>
+<!--<script type="text/javascript" src="js/colors.js"></script>-->
+<script type="text/javascript" src="static/js/test.js"></script>
+<!--<script src="lib/horizontal-timeline-master/js/main.js"></script>-->
+<script src="lib/echarts.min.js"></script>
+
+</body>
+</html>
